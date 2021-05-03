@@ -2,13 +2,14 @@
 /**
  * Database configuration
  */
-define('DB_USERNAME', '');
+define('DB_TYPE', 'mysql');
+define('DB_USERNAME', 'root');
 define('DB_PASSWORD', '');
-define('DB_HOST', '');
-define('DB_NAME', '');
+define('DB_HOST', 'localhost');
+define('DB_NAME', 'apirestVM');
 
 //referencia generado con MD5(uniqueid(<some_string>, true))
-define('API_KEY','3d524a53c110e4c22463b10ed32cef9d');
+//define('API_KEY','3d524a53c110e4c22463b10ed32cef9d');
 
 /**
  * API Response HTTP CODE
