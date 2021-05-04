@@ -1,5 +1,4 @@
 <?php
-include_once '../helpers/error.php';
 /**
  *
  * @About:      API Interface
@@ -23,185 +22,113 @@ header("Access-Control-Allow-Headers: X-Requested-With");
 header('Content-Type: text/html; charset=utf-8');
 header('P3P: CP="IDC DSP COR CURa ADMa OUR IND PHY ONL COM STA"'); 
 
-//Importamos la gestion de mensajes de error.
-include_once '../helpers/response.php';
-
-
-/* Aqui incluimos los archivos que se encargaran de manejar la base de datos y procesar la logica de:
-*   recuperacion
-*   guardado
-*   actualizacion
-*   eliminacion
+/********************** Importaciones de scripts necesarios *****************************************
+*   errorDev.php    script para mostrar errores de php en el explorador o cliente api.
+*   auth.php        script para autenticar a los usuarios con acceso a la api.
+*   Slim.php        libreria encargada de manejar las rutas o endpoint.
+*   Da*.php         acceso a datos encargados de realizar los CRUD por cada tabla de la BBDD        
 **/
+include_once '../helpers/error.php';
+include_once '../security/auth.php';
+require '../libs/Slim/Slim.php'; 
 include_once '../class/DaBalones.php';
+include_once '../class/DaClientes.php';
 
 /** inicializando la libreria Slim **/
-require '../libs/Slim/Slim.php'; 
 \Slim\Slim::registerAutoloader(); 
 $app = new \Slim\Slim();
 
+/*********************** Controlador para balones *************************/
 /* Usando GET para traer todos los balones */
 $app->get('/balones', function() {    
-    //recuperamos todos los registros del manejador de balones.
-    $response = DaBalones::recuperarTodos();
-    //Imprimimos la respuesta.
-    echoResponse(200, $response);  
+    $response = DaBalones::getAll();
+    echoResponse($response);  
 });
 
-/* Usando GET con parametro para traer el registro de un balon */
-$app->get('/balones/:serial', function ($serial) {
-    $response = DaBalones::buscarPorSerial($serial);
-    echoResponse(200, $response);
+/* Usando GET con parametro para traer el registro de un balones */
+$app->get('/balones/:dni', function ($dni) {
+    $response = DaBalones::getById($dni);
+    echoResponse($response);
 });
 
-/* Usando POST para crear un balon */
+/* Usando POST para crear un balones */
 $app->post('/balones', 'authenticate', function() use ($app) {
-    // check for required params
-    verifyRequiredParams(array('serial', 'capacidad', 'tulipa', 'marca', 'estado', 'operacion'));
-    //capturamos los parametros recibidos y los decodificamos a un nuevo array
     $param = $app->request()->getBody();
     $param = json_decode($param, true);
-    //creamos una nueva instancia de la clase DaBalones con los datos capturados
-    $balon = new DaBalones($param['serial'], $param['capacidad'], $param['tulipa'], $param['marca'], $param['estado'], $param['operacion']);
-    $response = $balon->guardar();
-    echoResponse(201, $param);
+    $response = DaBalones::save($param);
+    echoResponse($response);
 });
 
-/* Usando PUT para actualizar un balon */
-$app->put('/balones/:serial', 'authenticate', function($serial) use ($app) {
-    //capturamos los parametros recibidos y los almacenamos como un nuevo array
+/* Usando PUT para actualizar un balones */
+$app->put('/balones/:dni', 'authenticate', function($dni) use ($app) {
     $param = $app->request()->getBody();
     $param = json_decode($param, true);
-    
-    $bal = DaBalones::buscarPorSerial($serial);
-    //chequeamos si hay un error en la llamada a buscar el registro
-    if(isset($bal['result']['error_id'])){
-        $response = $bal;
-    }else{
-        //seleccionamos los datos a pasar como parametros.
-        $capacidad = isset($param['capacidad'])?$param['capacidad']:$bal['capacidad'];
-        $tulipa = isset($param['tulipa'])?$param['tulipa']:$bal['tulipa'];
-        $marca = isset($param['marca'])?$param['marca']:$bal['marca'];
-        $estado = isset($param['estado'])?$param['estado']:$bal['estado'];
-        $operacion = isset($param['operacion'])?$param['maroperacionca']:$bal['operacion'];
-        //creamos una nueva instancia de la clase DaBalones con los datos seleccionados en el paso anterior
-        $balon = new DaBalones($serial, $capacidad, $tulipa, $marca, $estado, $operacion);
-        $response = $balon->guardar();
-    }
-    echoResponse(201, $param);
+    $response = DaBalones::update($dni, $param);
+    echoResponse($response);
 });
 
 /* Usando DELETE para eliminar un registro de un balon */
 $app->delete('/balones/:serial', function ($serial) {
-    $response = DaBalones::eliminar($serial);
-    echoResponse(200, $response);
+    $response = DaBalones::delete($serial);
+    echoResponse($response);
 });
+
+/************************* controlador para clientes *************************************/
+/* Usando GET para traer todos los clientes */
+$app->get('/clientes', function() {    
+    $response = DaClientes::getAll();
+    echoResponse($response);  
+});
+
+/* Usando GET con parametro para traer el registro de un cliente */
+$app->get('/clientes/:dni', function ($dni) {
+    $response = DaClientes::getById($dni);
+    echoResponse($response);
+});
+
+/* Usando POST para crear un cliente */
+$app->post('/clientes', 'authenticate', function() use ($app) {
+    $param = $app->request()->getBody();
+    $param = json_decode($param, true);
+    $response = DaClientes::save($param);
+    echoResponse($response);
+});
+
+/* Usando PUT para actualizar un cliente */
+$app->put('/clientes/:dni', 'authenticate', function($dni) use ($app) {
+    $param = $app->request()->getBody();
+    $param = json_decode($param, true);
+    $response = DaClientes::update($dni, $param);
+    echoResponse($response);
+});
+
+/* Usando DELETE para eliminar un registro de un cliente */
+$app->delete('/clientes/:dni', function ($dni) {
+    $response = DaClientes::delete($dni);
+    echoResponse($response);
+});
+
+/************************* controlador para Usuarios **************************************/
+
+
+/************************* controlador para Movimientos ***********************************/
+
+
+/************************* controlador para pagos *****************************************/
+
 
 /* corremos la aplicación */
 $app->run();
 
-/*********************** USEFULL FUNCTIONS **************************************/
-
-/**
- * Verificando los parametros requeridos en el metodo o endpoint
- */
-function verifyRequiredParams($required_fields) {
-    $_respuestas = new respuestas();
-    $error = false;
-    $error_fields = "";
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $app = \Slim\Slim::getInstance();
-        $request_params = json_decode($app->request()->getBody(), true);
-    }
-    foreach ($required_fields as $field) {
-        if (!isset($request_params[$field]) || strlen(trim($request_params[$field])) <= 0) {
-            $error = true;
-            $error_fields .= $field . ', ';
-        }
-    }
- 
-    if ($error) {
-        // Required field(s) are missing or empty
-        // echo error json and stop the app
-        $response = array();
-        $app = \Slim\Slim::getInstance();
-        $response["error"] = true;
-        $response["message"] = 'Required field(s) ' . substr($error_fields, 0, -2) . ' is missing or empty ';        
-        echoResponse(400, $response);
-        
-        $app->stop();
-    }
-}
- 
-/**
- * Validando parametro email si necesario; un Extra ;)
- */
-function validateEmail($email) {
-    $app = \Slim\Slim::getInstance();
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $response["error"] = true;
-        $response["message"] = 'Email address is not valid';
-        echoResponse(400, $response);
-        
-        $app->stop();
-    }
-}
- 
 /**
  * Mostrando la respuesta en formato json al cliente o navegador
- * @param String $status_code Http response code
- * @param Int $response Json response
  */
-function echoResponse($status_code, $response) {
+function echoResponse($response) {
     $app = \Slim\Slim::getInstance();
     // Http response code
-    if(isset($response["result"]["error_id"])){
-        $app->status($response["result"]["error_id"]);
-    }else{
-        $app->status($status_code);
-    } 
+    $app->status($response["status_id"]);
     // setting response content type to json
     $app->contentType('application/json'); 
     echo json_encode($response);
-}
-
-/**
- * Agregando un leyer intermedio y autenticación para uno o todos los metodos, usar segun necesidad
- * Revisa si la consulta contiene un Header "Authorization" para validar
- */
-function authenticate(\Slim\Route $route) {
-    // Getting request headers
-    $headers = apache_request_headers();
-    $response = array();
-    $app = \Slim\Slim::getInstance();
- 
-    // Verifying Authorization Header
-    if (isset($headers['Authorization'])) {
-        //$db = new DbHandler(); //utilizar para manejar autenticacion contra base de datos
- 
-        // get the api key
-        $token = $headers['Authorization'];
-        define('API_KEY','3d524a53c110e4c22463b10ed32cef9d');
-        // validating api key
-        if (!($token == API_KEY)) { //API_KEY declarada en Config.php
-            
-            // api key is not present in users table
-            $response["error"] = true;
-            $response["message"] = "Acceso denegado. Token inválido " . $token;
-            echoResponse(401, $response);
-            
-            $app->stop(); //Detenemos la ejecución del programa al no validar
-            
-        } else {
-            //procede utilizar el recurso o metodo del llamado
-        }
-    } else {
-        // api key is missing in header
-        $response["error"] = true;
-        $response["message"] = "Falta token de autorización";
-        echoResponse(400, $response);
-        
-        $app->stop();
-    }
 }
 ?>
