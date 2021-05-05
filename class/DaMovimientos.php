@@ -2,13 +2,13 @@
  require_once 'connect/DbConnect.php';
  require_once '../helpers/response.php'; 
 
- class DaClientes{
-    const TABLA = 'clientes';
+ class DaMovimientos{
+    const TABLA = 'movimientos';
 
    public static function getAll(){
       $conn = new DbConnect();
       $_response = new Response();
-      $sql = $conn->prepare('SELECT * FROM ' . self::TABLA .' ORDER BY dni');
+      $sql = $conn->prepare('SELECT * FROM ' . self::TABLA .' ORDER BY id');
       try {
          $sql->execute();   
          return $_response->message_200($sql->fetchAll(PDO::FETCH_ASSOC));
@@ -22,8 +22,8 @@
    public static function getById($num){
       $conn = new DbConnect();
       $_response = new Response();
-      $sql = $conn->prepare('SELECT * FROM ' . self::TABLA .' WHERE dni = :dni');
-      $sql->bindParam(':dni', $num);
+      $sql = $conn->prepare('SELECT * FROM ' . self::TABLA .' WHERE id = :id');
+      $sql->bindParam(':id', $num);
       try {
          $sql->execute();
          $response = $sql->fetch(PDO::FETCH_ASSOC);
@@ -39,17 +39,23 @@
    public static function save($param){
       $conn = new DbConnect();
       $_response = new Response();
-      $response = self::existsId($param['dni']);
+      $response = self::existsId($param['id']);
       if($response == 0){
-         $paramRequired = isset($param['nombre'])? true : false;
-         $paramRequired = isset($param['telefono'])? true : false;
-         $paramRequired = isset($param['autorizador'])? true : false;
+         $paramRequired = isset($param['dnicliente'])? true : false;
+         $paramRequired = isset($param['dniusuario'])? true : false;
+         $paramRequired = isset($param['serial'])? true : false;
+         $paramRequired = isset($param['fecha'])? true : false;
+         $paramRequired = isset($param['operacion'])? true : false;
+         $paramRequired = isset($param['estado'])? true : false;
          if(!$paramRequired){return $_response->message_400();}
-         $sql = $conn->prepare('INSERT INTO ' . self::TABLA .' (dni, nombre, telefono, autorizador) VALUES(:dni, :nombre, :telefono, :autorizador)');
-         $sql->bindParam(':dni', $param['dni']);
-         $sql->bindParam(':nombre', $param['nombre']);
-         $sql->bindParam(':telefono', $param['telefono']);
-         $sql->bindParam(':autorizador', $param['autorizador']);
+         $sql = $conn->prepare('INSERT INTO ' . self::TABLA .' (id, dnicliente, dniusuario, serial, fecha, operacion, estado) VALUES(:id, :dnicliente, :dniusuario, :serial, :fecha, :operacion, :estado)');
+         $sql->bindParam(':id', $param['id']);
+         $sql->bindParam(':dnicliente', $param['dnicliente']);
+         $sql->bindParam(':dniusuario', $param['dniusuario']);
+         $sql->bindParam(':serial', $param['serial']);
+         $sql->bindParam(':fecha', $param['fecha']);
+         $sql->bindParam(':operacion', $param['operacion']);
+         $sql->bindParam(':estado', $param['estado']);
          try {
             $sql->execute();
             return $_response->message_201($param);
@@ -68,15 +74,21 @@
       $_response = new Response();
       $paramOld = self::getById($num);
       if($paramOld['status_id'] == "200"){
-         $param['dni'] = $num;
-         if(!isset($param['nombre'])){$param['nombre'] = $paramOld['response']['nombre'];}
-         if(!isset($param['telefono'])){$param['telefono'] = $paramOld['response']['telefono'];}
-         if(!isset($param['autorizador'])){$param['autorizador'] = $paramOld['response']['autorizador'];}
-         $sql = $conn->prepare('UPDATE  ' . self::TABLA .' SET nombre = :nombre, telefono = :telefono, autorizador = :autorizador WHERE dni = :dni');
-         $sql->bindParam(':dni', $param['dni']);
-         $sql->bindParam(':nombre', $param['nombre']);
-         $sql->bindParam(':telefono', $param['telefono']);
-         $sql->bindParam(':autorizador', $param['autorizador']);
+         $param['id'] = $num;
+         if(!isset($param['dnicliente'])){$param['dnicliente'] = $paramOld['response']['dnicliente'];}
+         if(!isset($param['dniusuario'])){$param['dniusuario'] = $paramOld['response']['dniusuario'];}
+         if(!isset($param['serial'])){$param['serial'] = $paramOld['response']['serial'];}
+         if(!isset($param['fecha'])){$param['fecha'] = $paramOld['response']['fecha'];}
+         if(!isset($param['operacion'])){$param['operacion'] = $paramOld['response']['operacion'];}
+         if(!isset($param['estado'])){$param['estado'] = $paramOld['response']['estado'];}
+         $sql = $conn->prepare('UPDATE  ' . self::TABLA .' SET dnicliente = :dnicliente, dniusuario = :dniusuario, serial = :serial, fecha = :fecha, operacion = :operacion, estado = :estado WHERE id = :id');
+         $sql->bindParam(':id', $param['id']);
+         $sql->bindParam(':dnicliente', $param['dnicliente']);
+         $sql->bindParam(':dniusuario', $param['dniusuario']);
+         $sql->bindParam(':serial', $param['serial']);
+         $sql->bindParam(':fecha', $param['fecha']);
+         $sql->bindParam(':operacion', $param['operacion']);
+         $sql->bindParam(':estado', $param['estado']);
          try {
             $sql->execute();
             return $_response->message_201($param);
@@ -93,8 +105,8 @@
    public static function delete($num){
       $conn = new DbConnect();
       $_response = new Response();
-      $sql = $conn->prepare('DELETE FROM ' . self::TABLA .' WHERE dni = :dni');
-      $sql->bindParam(':dni', $num);
+      $sql = $conn->prepare('DELETE FROM ' . self::TABLA .' WHERE id = :id');
+      $sql->bindParam(':id', $num);
       try {
          $sql->execute();
          return $_response->message_200('Registro eliminado.');
@@ -108,8 +120,8 @@
    private static function existsId($num){
       $conn = new DbConnect();
       $_response = new Response();
-      $sql = $conn->prepare('SELECT dni FROM ' . self::TABLA .' WHERE dni = :dni LIMIT 1');
-      $sql->bindParam(':dni', $num);
+      $sql = $conn->prepare('SELECT id FROM ' . self::TABLA .' WHERE id = :id LIMIT 1');
+      $sql->bindParam(':id', $num);
       try {
          $sql->execute();
          return $sql->rowCount();

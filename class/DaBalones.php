@@ -117,7 +117,7 @@
       $conn = new DbConnect();
       $_response = new Response();
       $sql = $conn->prepare('SELECT serial FROM ' . self::TABLA .' WHERE serial = :serial LIMIT 1');
-      $sql->bindParam(':serial', $serial);
+      $sql->bindParam(':serial', $num);
       try {
          $sql->execute();
          return $sql->rowCount();

@@ -51,6 +51,7 @@ class Auth{
         return $response;
     }
 }
+
 /**
  * Agregando una autenticación para uno o todos los metodos, usar segun necesidad
  * Revisa si la consulta contiene un Header "Authorization" para validar
@@ -80,7 +81,5 @@ function authenticate(\Slim\Route $route) {
         $app->stop(); //Detenemos la ejecución del programa al no validar
     }
 }
-
-
 
 ?>

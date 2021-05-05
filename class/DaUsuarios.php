@@ -173,7 +173,7 @@
       $conn = new DbConnect();
       $_response = new Response();
       $sql = $conn->prepare('SELECT dni FROM ' . self::TABLA .' WHERE dni = :dni LIMIT 1');
-      $sql->bindParam(':dni', $dni);
+      $sql->bindParam(':dni', $num);
       try {
          $sql->execute();
          return $sql->rowCount();
