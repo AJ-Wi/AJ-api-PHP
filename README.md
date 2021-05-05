@@ -18,7 +18,7 @@ Necesitas un Webserver con servicio http como Apache, nginx, etc. con PHP.
 
 Clona el repositorio en la carpeta de tu eleccion., se creara en ella una carpeta con el contenido de la API con el nombre 'AJ-dev-api'
 
-```
+```bash
 git clone https://github.com/cvcell/AJ-dev-api.git
 ```
 
