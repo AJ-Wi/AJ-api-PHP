@@ -22,7 +22,7 @@ header("Access-Control-Allow-Headers: X-Requested-With");
 header('Content-Type: text/html; charset=utf-8');
 header('P3P: CP="IDC DSP COR CURa ADMa OUR IND PHY ONL COM STA"'); 
 
-/********************** Importaciones de scripts necesarios *****************************************
+/********************** Importaciones de scripts necesarios ********************************
 *   errorDev.php    script para mostrar errores de php en el explorador o cliente api.
 *   auth.php        script para autenticar a los usuarios con acceso a la api.
 *   Slim.php        libreria encargada de manejar las rutas o endpoint.
@@ -38,16 +38,27 @@ include_once '../class/DaClientes.php';
 \Slim\Slim::registerAutoloader(); 
 $app = new \Slim\Slim();
 
-/*********************** Controlador para balones *************************/
+$app->get('/', function() use ($app){$app->redirect('../', 301);});
+
+/********* Controlador de autenticacion *********************/
+/* Usando POST para autenticar usuario */
+$app->post('/auth', function() use ($app) {
+    $param = $app->request()->getBody();
+    $param = json_decode($param, true);
+    $response = Auth::login($param);
+    echoResponse($response);
+});
+
+/********* Controlador para balones *************************/
 /* Usando GET para traer todos los balones */
-$app->get('/balones', function() {    
+$app->get('/balones', 'authenticate', function() {    
     $response = DaBalones::getAll();
     echoResponse($response);  
 });
 
 /* Usando GET con parametro para traer el registro de un balones */
-$app->get('/balones/:dni', function ($dni) {
-    $response = DaBalones::getById($dni);
+$app->get('/balones/:id', 'authenticate', function ($id) {
+    $response = DaBalones::getById($id);
     echoResponse($response);
 });
 
@@ -60,33 +71,30 @@ $app->post('/balones', 'authenticate', function() use ($app) {
 });
 
 /* Usando PUT para actualizar un balones */
-$app->put('/balones/:dni', 'authenticate', function($dni) use ($app) {
+$app->put('/balones/:id', 'authenticate', function($id) use ($app) {
     $param = $app->request()->getBody();
     $param = json_decode($param, true);
-    $response = DaBalones::update($dni, $param);
+    $response = DaBalones::update($id, $param);
     echoResponse($response);
 });
 
 /* Usando DELETE para eliminar un registro de un balon */
-$app->delete('/balones/:serial', function ($serial) {
-    $response = DaBalones::delete($serial);
+$app->delete('/balones/:id', 'authenticate', function ($id) {
+    $response = DaBalones::delete($id);
     echoResponse($response);
 });
 
-/************************* controlador para clientes *************************************/
-/* Usando GET para traer todos los clientes */
-$app->get('/clientes', function() {    
+/********* controlador para clientes **********************************/
+$app->get('/clientes', 'authenticate', function() {    
     $response = DaClientes::getAll();
     echoResponse($response);  
 });
 
-/* Usando GET con parametro para traer el registro de un cliente */
-$app->get('/clientes/:dni', function ($dni) {
-    $response = DaClientes::getById($dni);
+$app->get('/clientes/:id', 'authenticate', function ($id) {
+    $response = DaClientes::getById($id);
     echoResponse($response);
 });
 
-/* Usando POST para crear un cliente */
 $app->post('/clientes', 'authenticate', function() use ($app) {
     $param = $app->request()->getBody();
     $param = json_decode($param, true);
@@ -94,27 +102,25 @@ $app->post('/clientes', 'authenticate', function() use ($app) {
     echoResponse($response);
 });
 
-/* Usando PUT para actualizar un cliente */
-$app->put('/clientes/:dni', 'authenticate', function($dni) use ($app) {
+$app->put('/clientes/:id', 'authenticate', function($id) use ($app) {
     $param = $app->request()->getBody();
     $param = json_decode($param, true);
-    $response = DaClientes::update($dni, $param);
+    $response = DaClientes::update($id, $param);
     echoResponse($response);
 });
 
-/* Usando DELETE para eliminar un registro de un cliente */
-$app->delete('/clientes/:dni', function ($dni) {
-    $response = DaClientes::delete($dni);
+$app->delete('/clientes/:id', 'authenticate', function ($id) {
+    $response = DaClientes::delete($id);
     echoResponse($response);
 });
 
-/************************* controlador para Usuarios **************************************/
+/********* controlador para Usuarios **********************************/
 
 
-/************************* controlador para Movimientos ***********************************/
+/********* controlador para Movimientos *******************************/
 
 
-/************************* controlador para pagos *****************************************/
+/********* controlador para pagos *************************************/
 
 
 /* corremos la aplicación */

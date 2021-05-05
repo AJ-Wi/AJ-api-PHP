@@ -18,7 +18,7 @@
            <br>
            {
                <br>
-               "usuario" :"",  -> REQUERIDO
+               "user" :"",  -> REQUERIDO
                <br>
                "password": "" -> REQUERIDO
                <br>

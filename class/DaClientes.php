@@ -8,7 +8,7 @@
    public static function getAll(){
       $conn = new DbConnect();
       $_response = new Response();
-      $sql = $conn->prepare('SELECT * FROM ' . self::TABLA .' ORDER BY DNI');
+      $sql = $conn->prepare('SELECT * FROM ' . self::TABLA .' ORDER BY dni');
       try {
          $sql->execute();   
          return $_response->message_200($sql->fetchAll(PDO::FETCH_ASSOC));
@@ -22,7 +22,7 @@
    public static function getById($num){
       $conn = new DbConnect();
       $_response = new Response();
-      $sql = $conn->prepare('SELECT * FROM ' . self::TABLA .' WHERE DNI = :dni');
+      $sql = $conn->prepare('SELECT * FROM ' . self::TABLA .' WHERE dni = :dni');
       $sql->bindParam(':dni', $num);
       try {
          $sql->execute();
@@ -45,7 +45,7 @@
          $paramRequired = isset($param['telefono'])? true : false;
          $paramRequired = isset($param['autorizador'])? true : false;
          if(!$paramRequired){return $_response->message_400();}
-         $sql = $conn->prepare('INSERT INTO ' . self::TABLA .' (DNI, nombre, telefono, autorizador) VALUES(:dni, :nombre, :telefono, :autorizador)');
+         $sql = $conn->prepare('INSERT INTO ' . self::TABLA .' (dni, nombre, telefono, autorizador) VALUES(:dni, :nombre, :telefono, :autorizador)');
          $sql->bindParam(':dni', $param['dni']);
          $sql->bindParam(':nombre', $param['nombre']);
          $sql->bindParam(':telefono', $param['telefono']);
@@ -72,7 +72,7 @@
          if(!isset($param['nombre'])){$param['nombre'] = $paramOld['response']['nombre'];}
          if(!isset($param['telefono'])){$param['telefono'] = $paramOld['response']['telefono'];}
          if(!isset($param['autorizador'])){$param['autorizador'] = $paramOld['response']['autorizador'];}
-         $sql = $conn->prepare('UPDATE  ' . self::TABLA .' SET nombre = :nombre, telefono = :telefono, autorizador = :autorizador WHERE DNI = :dni');
+         $sql = $conn->prepare('UPDATE  ' . self::TABLA .' SET nombre = :nombre, telefono = :telefono, autorizador = :autorizador WHERE dni = :dni');
          $sql->bindParam(':dni', $param['dni']);
          $sql->bindParam(':nombre', $param['nombre']);
          $sql->bindParam(':telefono', $param['telefono']);
@@ -93,7 +93,7 @@
    public static function delete($num){
       $conn = new DbConnect();
       $_response = new Response();
-      $sql = $conn->prepare('DELETE FROM ' . self::TABLA .' WHERE DNI = :dni');
+      $sql = $conn->prepare('DELETE FROM ' . self::TABLA .' WHERE dni = :dni');
       $sql->bindParam(':dni', $num);
       try {
          $sql->execute();
@@ -108,7 +108,7 @@
    private static function existsId($num){
       $conn = new DbConnect();
       $_response = new Response();
-      $sql = $conn->prepare('SELECT DNI FROM ' . self::TABLA .' WHERE DNI = :dni LIMIT 1');
+      $sql = $conn->prepare('SELECT dni FROM ' . self::TABLA .' WHERE dni = :dni LIMIT 1');
       $sql->bindParam(':dni', $dni);
       try {
          $sql->execute();

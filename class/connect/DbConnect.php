@@ -13,8 +13,8 @@
       }
    } 
 
-   public static function encriptar ($cadena){
-      return password_hash($cadena, PASSWORD_DEFAULT);
+   public static function encrypt ($pass){
+      return password_hash($pass, PASSWORD_DEFAULT);
    }
 
  } 
