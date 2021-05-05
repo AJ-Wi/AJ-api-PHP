@@ -1,3 +1,7 @@
+<p align="center">
+    <img src="assets/img/AJ.svg" width="200" title="images">
+</p>
+
 # AJ-dev-api
 
 Servidor RESTful API con PHP Slim Framework para crear APIs JSON ligeros. Fácil de instalar. Lo puedes implementar con proyectos PHP existentes, sólo incorpora las clases de tu proyecto a controllador principal /v1/index.php y puedes proveer API de tus proyectos actuales. Soporta autenticación HTTP por medio de cabeceras.
@@ -12,11 +16,15 @@ Necesitas un Webserver con servicio http como Apache, nginx, etc. con PHP.
 
 ### Instalación
 
-Descarga el proyecto y copia el contenido a una carpeta en tu Raiz de documentos del servidor web. Generalmente www o htdocs. Eso es todo.
+Clona el repositorio en la carpeta de tu eleccion., se creara en ella una carpeta con el contenido de la API con el nombre 'AJ-dev-api'
+
+```
+git clone https://github.com/cvcell/AJ-dev-api.git
+```
 
 ## Utilizando el Servidor
 
-En tu navegador accede a Ej.: http://localhost/{nombre-de-directorio}/v1/. Asegúrate de que el servidor web esté ejecutándose.
+En tu navegador accede a Ej.: http://localhost/AJ-dev-api/v1/. Asegúrate de que el servidor web esté ejecutándose.
 
 ## Desarrollado con
 
