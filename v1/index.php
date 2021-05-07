@@ -15,12 +15,15 @@
  * Nótese los métodos permitidos en Access-Control-Allow-Methods. Esto nos permite limitar los métodos de consulta a nuestro RESTfull API
  * Mas información: https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
  **/
-header("Access-Control-Allow-Origin: *");
-header('Access-Control-Allow-Credentials: true');
-header('Access-Control-Allow-Methods: PUT, GET, POST, DELETE, OPTIONS');
-header("Access-Control-Allow-Headers: X-Requested-With");
-header('Content-Type: text/html; charset=utf-8');
-header('P3P: CP="IDC DSP COR CURa ADMa OUR IND PHY ONL COM STA"'); 
+header('Access-Control-Allow-Origin: *');
+header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Request-Method");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+header("Allow: GET, POST, OPTIONS, PUT, DELETE");
+$method = $_SERVER['REQUEST_METHOD'];
+if($method == "OPTIONS") {
+    die();
+}
+
 
 /********************** Importaciones de scripts necesarios ********************************
 *   Slim.php        libreria encargada de manejar las rutas o endpoint.
@@ -58,6 +61,12 @@ $app->post('/auth', function() use ($app) {
 /* Usando GET para traer todos los balones */
 $app->get('/balones', 'authenticate', function() {    
     $response = DaBalones::getAll();
+    echoResponse($response);  
+});
+
+/* Usando GET parametro para traer todos los balones filtrados*/
+$app->get('/balones/enviar', 'authenticate', function() {    
+    $response = DaBalones::getSend();
     echoResponse($response);  
 });
 

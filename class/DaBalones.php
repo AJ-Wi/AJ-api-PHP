@@ -19,6 +19,21 @@
       }
    }
 
+   public static function getSend(){
+      $conn = new DbConnect();
+      $_response = new Response();
+      //SELECT `balones`.`serial`, `clientes`.`dni`, `clientes`.`nombre`, `balones`.`estado`  FROM `balones` JOIN `movimientos` ON `balones`.`operacion` = "recepcion" AND `movimientos`.`serial` = `balones`.`serial` JOIN `clientes` ON `clientes`.`dni` = `movimientos`.`dniclientes`
+      $sql = $conn->prepare('SELECT balones.serial, clientes.dni, clientes.nombre, balones.estado FROM ' . self::TABLA .' JOIN movimientos ON balones.operacion = "recepcion" AND movimientos.serial = balones.serial JOIN clientes ON clientes.dni = movimientos.dniclientes');
+      try {
+         $sql->execute();   
+         return $_response->message_200($sql->fetchAll(PDO::FETCH_ASSOC));
+      } catch (PDOException $e) {
+         return $_response->message_400("Registros NO recuperados: " . $e->getMessage());
+      } finally{
+         $conn = null;
+      }
+   }
+
    public static function getById($num){
       $conn = new DbConnect();
       $_response = new Response();
