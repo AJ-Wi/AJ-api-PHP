@@ -1,6 +1,7 @@
 <?php
  require_once 'connect/DbConnect.php';
  require_once '../helpers/response.php'; 
+ require_once 'DaBalones.php';
 
  class DaMovimientos{
     const TABLA = 'movimientos';
@@ -12,6 +13,23 @@
       try {
          $sql->execute();   
          return $_response->message_200($sql->fetchAll(PDO::FETCH_ASSOC));
+      } catch (PDOException $e) {
+         return $_response->message_400("Registros NO recuperados: " . $e->getMessage());
+      } finally{
+         $conn = null;
+      }
+   }
+
+   public static function getSend($value){
+      $conn = new DbConnect();
+      $_response = new Response();
+      $sql = $conn->prepare('SELECT balones.serial, clientes.dni, clientes.nombre, balones.estado FROM balones JOIN movimientos ON balones.operacion = :operacion AND movimientos.serial = balones.serial JOIN clientes ON clientes.dni = movimientos.dnicliente GROUP BY balones.serial');
+      $sql->bindParam(':operacion', $value);
+      try {
+         $sql->execute();   
+         $response = $sql->fetchAll(PDO::FETCH_ASSOC);
+         if(!$response){return $_response->message_400("Registro NO encontrado");}
+         return $_response->message_200($response);
       } catch (PDOException $e) {
          return $_response->message_400("Registros NO recuperados: " . $e->getMessage());
       } finally{
@@ -36,11 +54,22 @@
       }
    }
 
+   public static function saveRelationship($params){
+      $_response = new Response();
+      foreach($params as $param){
+         $response = self::save($param);
+         DaBalones::update($param['serial'], $param);
+      }
+      if($response['status_id'] == '201'){
+         return $_response->message_201('Registros guardados con exito.');
+      }else{
+         return $response;
+      }
+   }
+
    public static function save($param){
       $conn = new DbConnect();
       $_response = new Response();
-      $response = self::existsId($param['id']);
-      if($response == 0){
          $paramRequired = isset($param['dnicliente'])? true : false;
          $paramRequired = isset($param['dniusuario'])? true : false;
          $paramRequired = isset($param['serial'])? true : false;
@@ -48,8 +77,7 @@
          $paramRequired = isset($param['operacion'])? true : false;
          $paramRequired = isset($param['estado'])? true : false;
          if(!$paramRequired){return $_response->message_400();}
-         $sql = $conn->prepare('INSERT INTO ' . self::TABLA .' (id, dnicliente, dniusuario, serial, fecha, operacion, estado) VALUES(:id, :dnicliente, :dniusuario, :serial, :fecha, :operacion, :estado)');
-         $sql->bindParam(':id', $param['id']);
+         $sql = $conn->prepare('INSERT INTO ' . self::TABLA .' (dnicliente, dniusuario, serial, fecha, operacion, estado) VALUES(:dnicliente, :dniusuario, :serial, :fecha, :operacion, :estado)');
          $sql->bindParam(':dnicliente', $param['dnicliente']);
          $sql->bindParam(':dniusuario', $param['dniusuario']);
          $sql->bindParam(':serial', $param['serial']);
@@ -64,9 +92,6 @@
          }finally{
             $conn = null;
          }
-      }else{
-         return $response;
-      }
    }
 
    public static function update($num, $param){

@@ -64,12 +64,6 @@ $app->get('/balones', 'authenticate', function() {
     echoResponse($response);  
 });
 
-/* Usando GET parametro para traer todos los balones filtrados*/
-$app->get('/balones/enviar', 'authenticate', function() {    
-    $response = DaBalones::getSend();
-    echoResponse($response);  
-});
-
 /* Usando GET con parametro para traer el registro de un balones */
 $app->get('/balones/:id', 'authenticate', function ($id) {
     $response = DaBalones::getById($id);
@@ -165,14 +159,21 @@ $app->get('/movimientos', 'authenticate', function() {
 });
 
 $app->get('/movimientos/:id', 'authenticate', function ($id) {
-    $response = DaMovimientos::getById($id);
+    $response = DaMovimientos::getSend($id);
     echoResponse($response);
 });
 
-$app->post('/usuarios', 'authenticate', function() use ($app) {
+$app->post('/movimientos', 'authenticate', function() use ($app) {
     $param = $app->request()->getBody();
     $param = json_decode($param, true);
     $response = DaMovimientos::save($param);
+    echoResponse($response);
+});
+
+$app->post('/movimientos/relationship', 'authenticate', function() use ($app) {
+    $param = $app->request()->getBody();
+    $param = json_decode($param, true);
+    $response = DaMovimientos::saveRelationship($param);
     echoResponse($response);
 });
 
