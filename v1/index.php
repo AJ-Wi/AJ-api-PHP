@@ -177,6 +177,13 @@ $app->post('/movimientos/relationship', 'authenticate', function() use ($app) {
     echoResponse($response);
 });
 
+$app->post('/movimientos/recepcion', 'authenticate', function() use ($app) {
+    $param = $app->request()->getBody();
+    $param = json_decode($param, true);
+    $response = DaMovimientos::saveRecepcion($param);
+    echoResponse($response);
+});
+
 $app->put('/movimientos/:id', 'authenticate', function($id) use ($app) {
     $param = $app->request()->getBody();
     $param = json_decode($param, true);

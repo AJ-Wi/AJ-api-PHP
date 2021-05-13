@@ -2,6 +2,7 @@
  require_once 'connect/DbConnect.php';
  require_once '../helpers/response.php'; 
  require_once 'DaBalones.php';
+ require_once 'DaClientes.php';
 
  class DaMovimientos{
     const TABLA = 'movimientos';
@@ -59,6 +60,32 @@
       foreach($params as $param){
          $response = self::save($param);
          DaBalones::update($param['serial'], $param);
+      }
+      if($response['status_id'] == '201'){
+         return $_response->message_201('Registros guardados con exito.');
+      }else{
+         return $response;
+      }
+   }
+
+   public static function saveRecepcion($params){
+      $_response = new Response();
+      $cli = DaClientes::save($params);
+      foreach($params['balones'] as $param){
+         $response = self::save([
+            "dnicliente" => $params["dni"],
+            "dniusuario" => $params["dniUser"],
+            "serial" => $param["serial"],
+            "fecha" => $params["fecha"],
+            "operacion" => "recepcion",
+            "estado" => "vacio"
+         ]);
+         $param['operacion'] = "recepcion";
+         $param['estado'] = "vacio";
+         $resp = DaBalones::update($param['serial'], $param);
+         if($resp['status_id'] != '201'){
+            DaBalones::save($param);
+         }
       }
       if($response['status_id'] == '201'){
          return $_response->message_201('Registros guardados con exito.');
