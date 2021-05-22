@@ -41,4 +41,4 @@ En tu navegador accede a Ej.: http://localhost/AJ-dev-api/v1/. Asegúrate de que
 
 ## License
 
-Este proyecto está bajo licencia MIT - ver [LICENSE](https://github.com/weblantropia/RESTful-API-Server/blob/master/LICENSE) para detalles
+Este proyecto está bajo licencia MIT - ver [LICENSE](https://github.com/cvcell/AJ-dev-api/blob/master/LICENSE) para detalles

@@ -1,132 +1,106 @@
 <?php
- require_once 'connect/DbConnect.php';
- require_once '../helpers/response.php'; 
+/**
+ * AJ-dev-api - a micro PHP API
+ *
+ * @author      Wladimir Perez <tropaguararia28@gmail.com>
+ * @copyright   2021 wladimir perez
+ * @link        https: //github.com/cvcell/AJ-dev-api.git
+ * @license     https: //github.com/cvcell/AJ-dev-api/blob/master/LICENSE
+ * @version     0.1.0
+ * @package     AJ-dev-api
+ *
+ */
 
- class DaBalones{
-    const TABLA = 'balones';
+require_once "connect/DbConnect.php";
+require_once "DbHandler.php";
+require_once "Response.php";
 
-   public static function getAll(){
-      $conn = new DbConnect();
-      $_response = new Response();
-      $sql = $conn->prepare('SELECT * FROM ' . self::TABLA .' ORDER BY serial');
-      try {
-         $sql->execute();   
-         return $_response->message_200($sql->fetchAll(PDO::FETCH_ASSOC));
-      } catch (PDOException $e) {
-         return $_response->message_400("Registros NO recuperados: " . $e->getMessage());
-      } finally{
-         $conn = null;
-      }
-   }
+/**
+ *Prepara las consultas a la tabla balones
+ *
+ * @package AJ-dev-api
+ * @author  wladimir perez
+ * @since   0.1.0
+ *
+ */
 
-     public static function getById($num){
-      $conn = new DbConnect();
-      $_response = new Response();
-      $sql = $conn->prepare('SELECT * FROM ' . self::TABLA .' WHERE serial = :serial');
-      $sql->bindParam(':serial', $num);
-      try {
-         $sql->execute();
-         $response = $sql->fetch(PDO::FETCH_ASSOC);
-         if(!$response){return $_response->message_400("Registro NO encontrado");}
-         return $_response->message_200($response);
-      } catch (PDOException $e) {
-         return $_response->message_400("Registro NO encontrado: " . $e->getMessage());
-      }finally{
-         $conn = null;
-      }
-   }
+class DaBalones
+{
+    const TABLA = "balones";
+    private static $fields = [
+        "serial" => "optional",
+        "capacidad" => "required",
+        "tulipa" => "required",
+        "marca" => "required",
+        "operacion" => "required",
+    ];
 
-   public static function save($param){
-      $conn = new DbConnect();
-      $_response = new Response();
-      $response = self::existsId($param['serial']);
-      if($response == 0){
-         $paramRequired = isset($param['capacidad'])? true : false;
-         $paramRequired = isset($param['tulipa'])? true : false;
-         $paramRequired = isset($param['marca'])? true : false;
-         $paramRequired = isset($param['estado'])? true : false;
-         $paramRequired = isset($param['operacion'])? true : false;
-         if(!$paramRequired){return $_response->message_400();}
-         $sql = $conn->prepare('INSERT INTO ' . self::TABLA .' (serial, capacidad, tulipa, marca, estado, operacion) VALUES(:serial, :capacidad, :tulipa, :marca, :estado, :operacion)');
-         $sql->bindParam(':serial', $param['serial']);
-         $sql->bindParam(':capacidad', $param['capacidad']);
-         $sql->bindParam(':tulipa', $param['tulipa']);
-         $sql->bindParam(':marca', $param['marca']);
-         $sql->bindParam(':estado', $param['estado']);
-         $sql->bindParam(':operacion', $param['operacion']);
-         try {
-            $sql->execute();
-            return $_response->message_201($param);
-         } catch (PDOException $e) {
-            return $_response->message_400("Registro NO guardado: " . $e->getMessage());
-         }finally{
-            $conn = null;
-         }
-      }else{
-         return $response;
-      }
-   }
+    private static function conn()
+    {
+        return new DbConnect();
+    }
 
-   public static function update($num, $param){
-      $conn = new DbConnect();
-      $_response = new Response();
-      $paramOld = self::getById($num);
-      if($paramOld['status_id'] == "200"){
-         $param['serial'] = $num;
-         if(!isset($param['capacidad'])){$param['capacidad'] = $paramOld['response']['capacidad'];}
-         if(!isset($param['tulipa'])){$param['tulipa'] = $paramOld['response']['tulipa'];}
-         if(!isset($param['marca'])){$param['marca'] = $paramOld['response']['marca'];}
-         if(!isset($param['estado'])){$param['estado'] = $paramOld['response']['estado'];}
-         if(!isset($param['operacion'])){$param['operacion'] = $paramOld['response']['operacion'];}
-         $sql = $conn->prepare('UPDATE  ' . self::TABLA .' SET capacidad = :capacidad, tulipa = :tulipa, marca = :marca, estado = :estado, operacion = :operacion WHERE serial = :serial');
-         $sql->bindParam(':serial', $param['serial']);
-         $sql->bindParam(':capacidad', $param['capacidad']);
-         $sql->bindParam(':tulipa', $param['tulipa']);
-         $sql->bindParam(':marca', $param['marca']);
-         $sql->bindParam(':estado', $param['estado']);
-         $sql->bindParam(':operacion', $param['operacion']);
-         try {
-            $sql->execute();
-            return $_response->message_201($param);
-         } catch (PDOException $e) {
-            return $_response->message_400("Registro NO encontrado: " . $e->getMessage());
-         }finally{
-            $conn = null;
-         }
-      }else{
-         return $paramOld;
-      }
-   }
+    public static function getAllTank()
+    {
+        $sql = self::conn()->prepare(
+            "SELECT * FROM " . self::TABLA . " ORDER BY serial"
+        );
+        return DbHandler::query($sql);
+    }
 
-   public static function delete($num){
-      $conn = new DbConnect();
-      $_response = new Response();
-      $sql = $conn->prepare('DELETE FROM ' . self::TABLA .' WHERE serial = :serial');
-      $sql->bindParam(':serial', $num);
-      try {
-         $sql->execute();
-         return $_response->message_200('Registro eliminado.');
-      } catch (PDOException $e) {
-         return $_response->message_400("Registro NO eliminado: ". $e->getMessage()); 
-      } finally{
-         $conn = null;
-      }
-   }
+    public static function getTankById($id)
+    {
+        $sql = self::conn()->prepare(
+            "SELECT * FROM " . self::TABLA . " WHERE serial = :serial"
+        );
+        $sql->bindParam(":serial", $id);
+        return DbHandler::query($sql, "getRow");
+    }
 
-   private static function existsId($num){
-      $conn = new DbConnect();
-      $_response = new Response();
-      $sql = $conn->prepare('SELECT serial FROM ' . self::TABLA .' WHERE serial = :serial LIMIT 1');
-      $sql->bindParam(':serial', $num);
-      try {
-         $sql->execute();
-         return $sql->rowCount();
-      } catch (PDOException $e) {
-         return $_response->message_400("Registro NO encontrado: " . $e->getMessage());
-      }finally{
-         $conn = null;
-      }
-   }
+    public static function saveTank($params)
+    {
+        if (self::existsTank($params["serial"])) {return Response::message_405();}
+        if (!DbHandler::paramRequired($params, self::$fields)) {return Response::message_400();}
+        $sql = self::conn()->prepare(
+            "INSERT INTO " .
+            self::TABLA .
+            " (serial, capacidad, tulipa, marca, operacion) VALUES(:serial, :capacidad, :tulipa, :marca, :operacion)"
+        );
+        $sql = DbHandler::bindFields($sql, $params, self::$fields);
+        return DbHandler::query($sql, "saveRow", $params);
+    }
 
- }
-?>
+    public static function updateTank($id, $params)
+    {
+        $paramOld = self::getTankById($id);
+        if ($paramOld['status_id'] == "400") {return $paramOld;}
+        $newParams = DbHandler::updateParams($params, $paramOld, self::$fields);
+        $sql = self::conn()->prepare(
+            "UPDATE  " .
+            self::TABLA .
+            " SET capacidad = :capacidad, tulipa = :tulipa, marca = :marca, operacion = :operacion WHERE serial = :serial"
+        );
+        $sql = DbHandler::bindFields($sql, $newParams, self::$fields);
+        return DbHandler::query($sql, "updateRow", $newParams);
+    }
+
+    public static function deleteTank($id)
+    {
+        $sql = self::conn()->prepare(
+            "DELETE FROM " . self::TABLA . " WHERE serial = :serial"
+        );
+        $sql->bindParam(":serial", $id);
+        return DbHandler::query($sql, "deleteRow");
+    }
+
+    public static function existsTank($id)
+    {
+        $sql = self::conn()->prepare(
+            "SELECT serial FROM " .
+            self::TABLA .
+            " WHERE serial = :serial LIMIT 1"
+        );
+        $sql->bindParam(":serial", $id);
+        return DbHandler::query($sql, "rowExists");
+    }
+}
