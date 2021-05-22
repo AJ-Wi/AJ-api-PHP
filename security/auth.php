@@ -1,4 +1,16 @@
 <?php
+/**
+ * AJ-dev-api - a micro PHP API
+ *
+ * @author      Wladimir Perez <tropaguararia28@gmail.com>
+ * @copyright   2021 wladimir perez
+ * @link        https: //github.com/cvcell/AJ-dev-api.git
+ * @license     https: //github.com/cvcell/AJ-dev-api/blob/master/LICENSE
+ * @version     0.1.0
+ * @package     AJ-dev-api
+ *
+ */
+
 date_default_timezone_set('America/Lima');
 require_once '../class/DaUsuarios.php';
 require_once '../class/Response.php';

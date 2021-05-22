@@ -13,17 +13,6 @@
 
 require_once "Response.php";
 
-/**
- *Ejecuta las consulta a la BBDD
- *
- * @package AJ-dev-api
- * @author  wladimir perez
- * @since   0.1.0
- *
- * @method  "getRow", "getAllRow", "saveRow", "updateRow", "deleteRow", "rowExists"
- *
- */
-
 class DbHandler
 {
 

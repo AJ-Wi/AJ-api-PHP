@@ -4,27 +4,30 @@
 
 # AJ-dev-api
 
-Servidor RESTful API con PHP Slim Framework para crear APIs JSON ligeros. Fácil de instalar. Lo puedes implementar con proyectos PHP existentes, sólo incorpora las clases de tu proyecto a controllador principal /v1/index.php y puedes proveer API de tus proyectos actuales. Soporta autenticación HTTP por medio de cabeceras.
+Mini API JSON ligero con PHP Slim Framework 2.6.1. Fácil de integrar con proyectos PHP existentes, sólo sigue la guia de instalacion e integracion a continuacion y podras proveer API de tus proyectos actuales. Soporta autenticación HTTP por medio de cabeceras.
 
 ## Empezando
 
-Estas instrucciones te permitirán instalar y utilizar el Script PHP RESTful API Server para desarrollo de API's con respuestas JSON. Para instrucciones detalladas de instalación visita este artículo [RESTful API: ¿Cómo hacer un API con PHP y Mysql?](http://www.weblantropia.com/2016/08/30/restful-api-api-php-mysql/)
+Estas instrucciones te permitirán instalar y utilizar el Script PHP AJ-dev-api para desarrollo de API's con respuestas JSON. Para instrucciones detalladas de instalación e integracion visita este artículo [AJ-dev-api: instrucciones de instalacion y configuracion](http://)
 
 ### Requisitos
 
-Necesitas un Webserver con servicio http como Apache, nginx, etc. con PHP.
+- Webserver con servicio http (Apache, nginx, etc)
+- PHP
 
 ### Instalación
 
-Clona el repositorio en la carpeta de tu eleccion., se creara en ella una carpeta con el contenido de la API con el nombre 'AJ-dev-api'
+Clona el repositorio en la carpeta de tu eleccion, se creara en ella una carpeta con el contenido de la API con el nombre 'AJ-dev-api'
 
 ```bash
 git clone https://github.com/cvcell/AJ-dev-api.git
 ```
 
-## Utilizando el Servidor
+## Integrar Clases
 
-En tu navegador accede a Ej.: http://localhost/AJ-dev-api/v1/. Asegúrate de que el servidor web esté ejecutándose.
+En el proyecto clonado (AJ-dev-api) puedes agregar tus clases en la carpeta "**class**", para que la integracion se de debes adaptar tus clases, posteriormente agregarlas al controlador que se encuentra en la carpeta "**v1**", ya en el proyesto se encuentra un modelo de clase con los parametros y estructura necesaria.
+
+- [clase modelo](https://github.com/cvcell/AJ-dev-api/blob/master/class/DaBalones.php)
 
 ## Desarrollado con
 
@@ -33,11 +36,17 @@ En tu navegador accede a Ej.: http://localhost/AJ-dev-api/v1/. Asegúrate de que
 
 ## Autor
 
-- **Federico Guzmán** - [Federico Guzman](http://about.me/federicoguzman)
-
-## Modificado por
-
 - **Wladimir Perez** - [cvcell](http://github.com/cvcell)
+
+## Fork
+
+Este proyecto nace de un Fork de un repositorio de [Federico Guzman](http://about.me/federicoguzman),
+el cual me ayudo a comprender mejor el funcionamiento de las APIs. Si quieren aprender Cómo hacer un
+API con PHP y Mysql, se los recomiendo.
+A continuacion dejo enlases a su proyecto y tutorial, espero lo difruten y saque probecho al igual que yo.
+
+- **Proyecto** - [RESTful-API-Server](https://github.com/weblantropia/RESTful-API-Server)
+- **Tutorial** - [RESTful API: ¿Cómo hacer un API con PHP y Mysql?](http://www.weblantropia.com/2016/08/30/restful-api-api-php-mysql/)
 
 ## License
 

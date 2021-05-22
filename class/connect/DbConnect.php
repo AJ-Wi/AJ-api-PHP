@@ -19,9 +19,6 @@ class DbConnect extends PDO
 
     public function __construct()
     {
-        //Recupero la configuracion de la conexion.
-        //include_once dirname(__FILE__) . '/config.php';
-        //Sobreescribo el método constructor de la clase PDO.
         try {
             parent::__construct(DB_TYPE . ":dbname=" . DB_NAME . ";host=" . DB_HOST . ";charset=utf8", DB_USERNAME, DB_PASSWORD);
         } catch (PDOException $e) {

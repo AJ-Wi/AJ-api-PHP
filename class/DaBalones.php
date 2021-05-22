@@ -8,21 +8,13 @@
  * @license     https: //github.com/cvcell/AJ-dev-api/blob/master/LICENSE
  * @version     0.1.0
  * @package     AJ-dev-api
+ * @file        Clase Modelo
  *
  */
 
 require_once "connect/DbConnect.php";
 require_once "DbHandler.php";
 require_once "Response.php";
-
-/**
- *Prepara las consultas a la tabla balones
- *
- * @package AJ-dev-api
- * @author  wladimir perez
- * @since   0.1.0
- *
- */
 
 class DaBalones
 {

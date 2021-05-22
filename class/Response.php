@@ -13,15 +13,6 @@
 
 require_once '../libs/Slim/Slim.php';
 
-/**
- *Formatea y manda la respuesta al cliente.
- *
- * @package AJ-dev-api
- * @author  wladimir perez
- * @since   0.1.0
- *
- */
-
 class Response
 {
 

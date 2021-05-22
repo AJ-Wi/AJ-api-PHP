@@ -1,18 +1,19 @@
 <?php
 /**
+ * AJ-dev-api - a micro PHP API
  *
- * @About:      API Interface
- * @File:       index.php
- * @Date:       $Date:$ Nov-2015
- * @Version:    $Rev:$ 1.1
- * @Developer:  Federico Guzman (federicoguzman@gmail.com)
- * @Modified:   $Date:$ MAY-2021
- * @Developer:  Wladimir Perez (tropaguararia28@gmail.com)
- **/
+ * @author      Wladimir Perez <tropaguararia28@gmail.com>
+ * @copyright   2021 wladimir perez
+ * @link        https: //github.com/cvcell/AJ-dev-api.git
+ * @license     https: //github.com/cvcell/AJ-dev-api/blob/master/LICENSE
+ * @version     0.1.0
+ * @package     AJ-dev-api
+ *
+ */
 
-/* Los headers permiten acceso desde otro dominio (CORS) a nuestro REST API o desde un cliente remoto via HTTP
- * Removiendo las lineas header() limitamos el acceso a nuestro RESTfull API a el mismo dominio
- * Nótese los métodos permitidos en Access-Control-Allow-Methods. Esto nos permite limitar los métodos de consulta a nuestro RESTfull API
+/* Los headers permiten acceso desde otro dominio (CORS) a nuestro API o desde un cliente remoto via HTTP
+ * Removiendo las lineas header() limitamos el acceso a nuestro API a el mismo dominio
+ * Nótese los métodos permitidos en Access-Control-Allow-Methods. Esto nos permite limitar los métodos de consulta a nuestro API
  * Mas información: https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
  **/
 header('Access-Control-Allow-Origin: *');
