@@ -4,11 +4,11 @@
 
 # AJ-api-PHP
 
-Mini API JSON ligero con PHP Slim Framework 2.6.1. Fácil de integrar con proyectos PHP existentes, sólo sigue la guia de instalacion e integracion a continuacion y podras proveer API de tus proyectos actuales. Soporta autenticación HTTP por medio de cabeceras.
+Mini API JSON ligero con PHP **Slim Framework 2.6.1**. Fácil de integrar con proyectos PHP existentes, sólo sigue la guia de instalacion e integracion a continuacion y podras proveer API de tus proyectos actuales. Soporta autenticación HTTP por medio de cabeceras.
 
 ## Empezando
 
-Estas instrucciones te permitirán instalar y utilizar el Script PHP AJ-api-PHP para desarrollo de API's con respuestas JSON. Para instrucciones detalladas de instalación e integracion visita este artículo [AJ-api-PHP: instrucciones de instalacion y configuracion](http://)
+Estas instrucciones te permitirán instalar y utilizar el Script PHP **AJ-api-PHP** para desarrollo de API's con respuestas JSON. Para instrucciones detalladas de instalación e integracion visita este artículo [AJ-api-PHP: instrucciones de instalacion y configuracion](http://)
 
 ### Requisitos
 
@@ -17,7 +17,7 @@ Estas instrucciones te permitirán instalar y utilizar el Script PHP AJ-api-PHP 
 
 ### Instalación
 
-Clona el repositorio en la carpeta de tu eleccion, se creara en ella una carpeta con el contenido de la API con el nombre 'AJ-dev-api'
+Clona el repositorio en la carpeta de tu eleccion, se creara en ella una carpeta con el contenido de la API con el nombre '**AJ-api-PHP**'
 
 ```bash
 git clone https://github.com/AJ-Wi/AJ-api-PHP.git
@@ -25,7 +25,7 @@ git clone https://github.com/AJ-Wi/AJ-api-PHP.git
 
 ## Integrar Clases
 
-En el proyecto clonado (AJ-api-PHP) puedes agregar tus clases en la carpeta "**class**", para que la integracion se de debes adaptar tus clases, posteriormente agregarlas al controlador que se encuentra en la carpeta "**v1**", ya en el proyesto se encuentra un modelo de clase con los parametros y estructura necesaria.
+En el proyecto clonado (**AJ-api-PHP**) puedes agregar tus clases en la carpeta "**class**", para que la integracion se de debes adaptar tus clases, posteriormente agregarlas al controlador que se encuentra en la carpeta "**v1**", ya en el proyesto se encuentra un modelo de clase con los parametros y estructura necesaria.
 
 - [clase modelo](https://github.com/AJ-Wi/AJ-api-PHP/blob/master/class/DaBalones.php)
 
