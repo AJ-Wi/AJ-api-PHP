@@ -1,14 +1,14 @@
 <p align="center">
-    <img src="assets/img/AJ.svg" width="200" title="images">
+    <img src="https://github.com/AJ-Wi/AJ-Wi.github.io/blob/master/images/AJ-Wi.svg" width="200" title="images">
 </p>
 
-# AJ-dev-api
+# AJ-api-PHP
 
 Mini API JSON ligero con PHP Slim Framework 2.6.1. Fácil de integrar con proyectos PHP existentes, sólo sigue la guia de instalacion e integracion a continuacion y podras proveer API de tus proyectos actuales. Soporta autenticación HTTP por medio de cabeceras.
 
 ## Empezando
 
-Estas instrucciones te permitirán instalar y utilizar el Script PHP AJ-dev-api para desarrollo de API's con respuestas JSON. Para instrucciones detalladas de instalación e integracion visita este artículo [AJ-dev-api: instrucciones de instalacion y configuracion](http://)
+Estas instrucciones te permitirán instalar y utilizar el Script PHP AJ-api-PHP para desarrollo de API's con respuestas JSON. Para instrucciones detalladas de instalación e integracion visita este artículo [AJ-api-PHP: instrucciones de instalacion y configuracion](http://)
 
 ### Requisitos
 
@@ -20,14 +20,14 @@ Estas instrucciones te permitirán instalar y utilizar el Script PHP AJ-dev-api 
 Clona el repositorio en la carpeta de tu eleccion, se creara en ella una carpeta con el contenido de la API con el nombre 'AJ-dev-api'
 
 ```bash
-git clone https://github.com/cvcell/AJ-dev-api.git
+git clone https://github.com/AJ-Wi/AJ-api-PHP.git
 ```
 
 ## Integrar Clases
 
-En el proyecto clonado (AJ-dev-api) puedes agregar tus clases en la carpeta "**class**", para que la integracion se de debes adaptar tus clases, posteriormente agregarlas al controlador que se encuentra en la carpeta "**v1**", ya en el proyesto se encuentra un modelo de clase con los parametros y estructura necesaria.
+En el proyecto clonado (AJ-api-PHP) puedes agregar tus clases en la carpeta "**class**", para que la integracion se de debes adaptar tus clases, posteriormente agregarlas al controlador que se encuentra en la carpeta "**v1**", ya en el proyesto se encuentra un modelo de clase con los parametros y estructura necesaria.
 
-- [clase modelo](https://github.com/cvcell/AJ-dev-api/blob/master/class/DaBalones.php)
+- [clase modelo](https://github.com/AJ-Wi/AJ-api-PHP/blob/master/class/DaBalones.php)
 
 ## Desarrollado con
 
@@ -36,7 +36,7 @@ En el proyecto clonado (AJ-dev-api) puedes agregar tus clases en la carpeta "**c
 
 ## Autor
 
-- **Wladimir Perez** - [cvcell](http://github.com/cvcell)
+- **Wladimir Perez** - [AJ-Wi](http://github.com/AJ-Wi)
 
 ## Fork
 
@@ -50,4 +50,4 @@ A continuacion dejo enlases a su proyecto y tutorial, espero lo difruten y saque
 
 ## License
 
-Este proyecto está bajo licencia MIT - ver [LICENSE](https://github.com/cvcell/AJ-dev-api/blob/master/LICENSE) para detalles
+Este proyecto está bajo licencia MIT - ver [LICENSE](https://github.com/AJ-Wi/AJ-api-PHP/blob/master/LICENSE) para detalles
