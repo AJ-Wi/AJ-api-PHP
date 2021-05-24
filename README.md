@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://github.com/AJ-Wi/AJ-Wi.github.io/blob/master/images/AJ-Wi.svg" width="200" title="images">
+    <img src="https://github.com/AJ-Wi/AJ-Wi.github.io/blob/master/images/AJ-Wi.svg" width="300" title="images">
 </p>
 
 # AJ-api_PHP
