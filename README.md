@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://github.com/AJ-Wi/AJ-Wi/blob/main/assets/logo_horizontal.png" width="300" title="images">
+    <img src="https://github.com/wipodev/wipodev/blob/main/assets/logo-main.svg" width="300" title="images">
 </p>
 
 # AJ-api_PHP
